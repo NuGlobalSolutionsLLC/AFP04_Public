@@ -27,6 +27,8 @@
           class="btn-fixed-width"
           color="accent"
           icon="logout"
+          push
+          flat
           @click="doLogout"
         />
       </q-toolbar>
