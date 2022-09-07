@@ -84,7 +84,7 @@ export default defineComponent({
       //     console.log(username.value, password.value, 'is invalid')
       //   }
       // })
-      const url = `https://database.deta.sh/v1/${$store.DETA_ID}/afp4_users/items/${username.value}`;
+      const url = `https://database.deta.sh/v1/${$store.DETA_ID}/afp4public_users/items/${username.value}`;
       const errorMessage = "Username or password do not match.";
       fetch(url, {
         method: "GET",
