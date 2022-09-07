@@ -190,9 +190,18 @@ export default defineComponent({
       const commonParams = {
         options: {
           pointToLayer: (feature, latLng) => {
-            const params = getFeatureStyle(feature);
-            params.riseOnHover = true;
-            return circle(latLng, params);
+            const featureParams = getFeatureStyle(feature);
+            featureParams.riseOnHover = true;
+            if (feature.properties.Result === 0) {
+              return L.marker(latLng, {
+                icon: L.divIcon({ className: "arrow-up" }),
+              });
+            } else {
+              return circle(latLng, featureParams);
+            }
+            // const params = getFeatureStyle(feature);
+            // params.riseOnHover = true;
+            // return circle(latLng, params);
           },
           onEachFeature: function (feature, leafletLayer) {
             const layer = feature.properties.layer;
@@ -200,8 +209,10 @@ export default defineComponent({
             let params = Object.assign({}, $store.sections[layer.class]);
             leafletLayer.on("mouseover", function (event) {
               params = Object.assign(params, event.target.options);
-              this.setStyle(params.hoverStyle);
-              event.target.bringToFront();
+              if (typeof this.setStyle === "function") {
+                this.setStyle(params.hoverStyle);
+                event.target.bringToFront();
+              }
               let tooltipFunc =
                 params.tooltip || (layer.options && layer.options.tooltip);
               if (tooltipFunc) {
@@ -216,12 +227,14 @@ export default defineComponent({
             });
             leafletLayer.on("mouseout", function (event) {
               params = Object.assign(params, event.target.options);
-              if (layer.options && layer.options.style) {
-                this.setStyle(layer.options.style(feature));
-              } else if (layer.style) {
-                this.setStyle(layer.style(feature));
-              } else {
-                this.setStyle(getFeatureStyle(feature));
+              if (typeof this.setStyle === "function") {
+                if (layer.options && layer.options.style) {
+                  this.setStyle(layer.options.style(feature));
+                } else if (layer.style) {
+                  this.setStyle(layer.style(feature));
+                } else {
+                  this.setStyle(getFeatureStyle(feature));
+                }
               }
               if (params.tooltip) {
                 tooltip.close();
@@ -316,7 +329,7 @@ export default defineComponent({
           .filter((layer) => layer.class !== "geoimage")
           .forEach(async (layer) => {
             const url = "data/" + layer.file;
-            const data = await fetch(url)
+            fetch(url)
               .then((response) => {
                 if (response.ok) return response.json();
                 else throw response;
@@ -350,7 +363,7 @@ export default defineComponent({
             map.invalidateSize();
           }
           getGeoJsons();
-        }, 300);
+        }, 500);
       }, 1);
     });
 
@@ -401,6 +414,22 @@ export default defineComponent({
 </script>
 
 <style type="scss" scoped>
+:deep(.arrow-up) {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 14px solid #910000a1;
+}
+:deep(.label) {
+  font-size: 1.6em;
+  font-weight: bold;
+  -webkit-text-stroke-color: white;
+  -webkit-text-stroke-width: 1px;
+}
+:deep(.contour-label) {
+  color: black;
+}
 .q-page-container,
 :deep(.q-page-container),
 .q-page,

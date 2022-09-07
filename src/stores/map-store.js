@@ -2,11 +2,115 @@ import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
+const makePotStyle = (custom) => {
+  if (!custom) custom = {};
+  return Object.assign(
+    {
+      opacity: 1,
+      color: "#00a1bd",
+      dashArray: "",
+      lineCap: "butt",
+      lineJoin: "miter",
+      weight: 2.0,
+      fill: true,
+      fillOpacity: 1,
+      fillColor: "rgba(82, 165, 237,0.0)",
+    },
+    custom
+  );
+};
+
 const TEMPLATES = {
+  tac: {
+    style: (feature) => {
+      return {
+        opacity: 1,
+        color: "rgba(95,93,90,0.2)",
+        dashArray: "",
+        lineCap: "butt",
+        lineJoin: "miter",
+        weight: 2.0,
+        fill: true,
+        fillOpacity: 1,
+        fillColor: "rgba(0,77,168,0.6)",
+      };
+    },
+  },
+  pot: {
+    style: (feature) => {
+      let props = feature.properties;
+      if (props.layer.style && props.layer.label !== "Contour") {
+        return props.layer.style(feature);
+      }
+      if (props.Color == 100) return makePotStyle();
+      else if (props.Color == 210) {
+        return makePotStyle({
+          color: "#7000f0",
+          dashArray: "4 3",
+        });
+      } else {
+        return makePotStyle({
+          color: "#00000000",
+        });
+      }
+    },
+    style_mp: (feature) => {
+      if (feature.properties.Color == 130) return makePotStyle();
+      else if (feature.properties.Color == 90) {
+        return makePotStyle({
+          color: "#7000f0",
+          dashArray: "4 3",
+        });
+      } else {
+        return makePotStyle({
+          color: "#00000000",
+        });
+      }
+    },
+    style_ta: (feature) => {
+      let props = feature.properties;
+      if (props.layer.style && props.layer.label !== "Contour") {
+        return props.layer.style(feature);
+      }
+      if (props.Color == 140) return makePotStyle();
+      else if (props.Color == 24) {
+        return makePotStyle({
+          color: "#7000f0",
+          dashArray: "4 3",
+        });
+      } else {
+        return makePotStyle({
+          color: "#00000000",
+        });
+      }
+    },
+  },
   tce: {
     label: "Trichloroethylene",
     analyte: "Trichloroethylene",
     limits: [5, 50, 100, 400, 1000, 5000, 10000],
+    colors: [
+      "rgba(0,255,0,1.0)",
+      "rgba(0,255,197,1.0)",
+      "rgba(233,255,190,1.0)",
+      "rgba(255,255,0,1.0)",
+      "rgba(255,235,175,1.0)",
+      "rgba(255,170,0,1.0)",
+      "rgba(255,0,0,1.0)",
+      "rgba(132,0,168,1.0)",
+    ],
+    style: () => {
+      return {
+        radius: 6,
+        color: "black",
+        weight: 1,
+      };
+    },
+  },
+  pce: {
+    label: "Tetrachloroethylene",
+    analyte: "Tetrachloroethylene",
+    limits: [5, 25, 250, 2500, 25000, 250000, 500000],
     colors: [
       "rgba(0,255,0,1.0)",
       "rgba(0,255,197,1.0)",
@@ -292,30 +396,298 @@ export const useMapStore = defineStore("map-store", {
     },
     layers: [
       {
+        label: "2021 Plume",
+        icon: "shape_line",
+        childs: [
+          {
+            label: "Flow direction",
+            file: "2020Plume_arrowlines.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "Flow direction"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              if (feature.geometry.type !== "Point") {
+                return {
+                  opacity: 1,
+                  color: "rgb(255,2,141)",
+                  dashArray: "",
+                  lineCap: "butt",
+                  lineJoin: "miter",
+                  weight: 3.0,
+                  fill: true,
+                  fillOpacity: 0,
+                  fillColor: "rgba(0,77,168,0.8)",
+                };
+              } else {
+                let props = feature.properties;
+                if (props.arrowlabel === "1") {
+                  return {
+                    icon: L.icon({
+                      iconUrl: "static/img/img_arrow_1.png",
+                      iconSize: [16, 16],
+                      className: "layer_2020Plumn_arrowpoint",
+                    }),
+                  };
+                }
+                return {
+                  color: "blue",
+                };
+              }
+            },
+            options: {
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "Flow direction"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+                let props = feature.properties;
+                if (props.arrowlabel === "1") {
+                  return L.marker(latLng, {
+                    rotationAngle: 0.0,
+                    rotationOrigin: "center center",
+                    icon: L.icon({
+                      iconUrl: "img/img_arrow_1.png",
+                      iconSize: [16, 16],
+                    }),
+                  });
+                } else if (props.arrowlabel === "2") {
+                  return L.marker(latLng, {
+                    rotationAngle: 0.0,
+                    rotationOrigin: "center center",
+                    icon: L.icon({
+                      iconUrl: "img/img_arrow_2.png",
+                      iconSize: [16, 16],
+                    }),
+                  });
+                } else if (props.arrowlabel === "3") {
+                  return L.marker(latLng, {
+                    rotationAngle: 0.0,
+                    rotationOrigin: "center center",
+                    icon: L.icon({
+                      iconUrl: "img/img_arrow_3.png",
+                      iconSize: [16, 16],
+                    }),
+                  });
+                } else if (props.arrowlabel === "4") {
+                  return L.marker(latLng, {
+                    rotationAngle: 0.0,
+                    rotationOrigin: "center center",
+                    icon: L.icon({
+                      iconUrl: "img/img_arrow_4.png",
+                      iconSize: [16, 16],
+                    }),
+                  });
+                }
+              },
+            },
+          },
+          {
+            label: "Contour",
+            file: "POT_TA.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "Contour"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              return TEMPLATES.pot.style_ta(feature);
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "Contour"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                return TEMPLATES.pot.style_ta(feature);
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "Contour"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+                let props = feature.properties;
+                return L.marker(latLng, {
+                  icon: L.divIcon({
+                    html: props.text,
+                    className: "label contour-label",
+                  }),
+                });
+              },
+            },
+            template: TEMPLATES.pot,
+          },
+          {
+            label: "TAC-VC",
+            file: "s4_Terrace_VC_2021.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "TAC-VC"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              return TEMPLATES.tac.style(feature);
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "TAC-VC"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                return TEMPLATES.tac.style(feature);
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "TAC-VC"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+          {
+            label: "TAC-DCE",
+            file: "s4_Terrace_cDCE_2021.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "TAC-DCE"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              const _style = Object.create(TEMPLATES.tac.style(feature));
+              return Object.assign(_style, {
+                color: "rgba(95,93,90,0.2)",
+                fillColor: "rgba(168,0,132,0.6)",
+              });
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "TAC-DCE"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                const _style = Object.create(TEMPLATES.tac.style(feature));
+                return Object.assign(_style, {
+                  color: "rgba(95,93,90,0.2)",
+                  fillColor: "rgba(168,0,132,0.6)",
+                });
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "TAC-DCE"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+          {
+            label: "TAC-TCE",
+            file: "s4_Terrace_TCE_2021.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "TAC-TCE"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              const _style = Object.create(TEMPLATES.tac.style(feature));
+              return Object.assign(_style, {
+                color: "rgba(95,93,90,0.2)",
+                fillColor: "rgba(112,168,0,0.6)",
+              });
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "TAC-TCE"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                const _style = Object.create(TEMPLATES.tac.style(feature));
+                return Object.assign(_style, {
+                  color: "rgba(95,93,90,0.2)",
+                  fillColor: "rgba(112,168,0,0.6)",
+                });
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "TAC-TCE"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+        ],
+      },
+      {
         label: "Layer List",
         icon: "layers",
         mode: "single-select",
         childs: [
           {
-            label: "TCE in GW",
-            file: "GWTCE46.json",
-            class: "chemdata",
-            active: true,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE > 1990 in GW",
-            file: "GWTCEafter199045.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE > 2000 in GW",
+            label: "TCE in GW > 2000",
             file: "GWTCEafter200044.json",
             class: "chemdata",
             active: false,
@@ -324,79 +696,16 @@ export const useMapStore = defineStore("map-store", {
             style: TEMPLATES.tce.style,
           },
           {
-            label: "TCE > 2016 in GW",
-            file: "GWTCEafter201654.json",
+            label: "PCE in GW",
+            file: "GW_PCE.json",
             class: "chemdata",
             active: false,
             matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
+            template: TEMPLATES.pce,
+            style: TEMPLATES.pce.style,
           },
           {
-            label: "TCE Max in GW",
-            file: "GWTCEMax43.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE Terrace Alluvial in GW",
-            file: "GWTCETerrace42.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE Walnut in GW",
-            file: "GWTCEWalnut41.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE Upper Paluxy in GW",
-            file: "GWTCEUpperP40.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE Middle Paluxy in GW",
-            file: "GWTCEMiddleP39.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE Lower Paluxy in GW",
-            file: "GWTCELowerP38.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.tce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Cis 1,2-DCE in GW",
-            file: "GWcis12DCE37.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.cis,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Cis 1,2-DCE > 2000 in GW",
+            label: "Cis 1,2-DCE in GW > 2000",
             file: "GWcis12DCEafter200036.json",
             class: "chemdata",
             active: false,
@@ -405,102 +714,12 @@ export const useMapStore = defineStore("map-store", {
             style: TEMPLATES.tce.style,
           },
           {
-            label: "Vinyl chloride in GW",
+            label: "VC in GW",
             file: "GWVC35.json",
             class: "chemdata",
             active: false,
             matrix: "GW",
             template: TEMPLATES.vinyl,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Vinyl chloride > 2000 in GW",
-            file: "GWVCafter200034.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.vinyl,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Ethane in GW",
-            file: "GWEthane32.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.ethane,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Ethene in GW",
-            file: "GWEthene33.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.ethene,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Chromium VI in GW",
-            file: "GWChromiumVI28.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.chromiumVI,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Total Chromium in GW",
-            file: "GWTotalChromium27.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.chromium,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "C13 Data in GW",
-            file: "GWC13Data26.json",
-            class: "chemdata",
-            active: false,
-            matrix: "GW",
-            template: TEMPLATES.c13,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE in SO",
-            file: "SOTCE24.json",
-            class: "chemdata",
-            active: false,
-            matrix: "SO",
-            template: TEMPLATES.sotce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Cis 1,2-DCE in SO",
-            file: "SOcis12DCE23.json",
-            class: "chemdata",
-            active: false,
-            matrix: "SO",
-            template: TEMPLATES.sodce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Vinyl chloride in SO",
-            file: "SOVC22.json",
-            class: "chemdata",
-            active: false,
-            matrix: "SO",
-            template: TEMPLATES.sovinyl,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "TCE in SE",
-            file: "SETCE21.json",
-            class: "chemdata",
-            active: false,
-            matrix: "SE",
-            template: TEMPLATES.setce,
             style: TEMPLATES.tce.style,
           },
           {
@@ -513,16 +732,7 @@ export const useMapStore = defineStore("map-store", {
             style: TEMPLATES.tce.style,
           },
           {
-            label: "Cis 1,2-DCE in SW",
-            file: "SWcis12DCE19.json",
-            class: "chemdata",
-            active: false,
-            matrix: "SW",
-            template: TEMPLATES.swdce,
-            style: TEMPLATES.tce.style,
-          },
-          {
-            label: "Vinyl chloride in SW",
+            label: "VC in SW",
             file: "SWVC18.json",
             class: "chemdata",
             active: false,
@@ -536,82 +746,6 @@ export const useMapStore = defineStore("map-store", {
         label: "Transects",
         icon: "stacked_line_chart",
         childs: [
-          {
-            label: "4D View",
-            file: "TranLine4DView17.json",
-            active: false,
-            class: "transects",
-            hoverStyle: {
-              weight: 7,
-              color: "#e1e3dc",
-            },
-          },
-          // {
-          //   label: 'East Parking Lot & B181 CSM',
-          //   file: 'TranLineEastParkL15.json',
-          //   active: false,
-          //   class: 'transects',
-          //   template: {
-          //     fillColor: 'transparent',
-          //     color: '#f56725',
-          //     weight: 5,
-          //     popup: feature => {
-          //       const props = feature.feature.properties
-          //       return `
-          //         <h6>${props.name}</h6>
-          //         <p>Click <a href="${props.url}" target="_blank"><b>here</b></a> to open Cross-Section Interactive Page.</p>
-          //       `
-          //     },
-          //     popupOptions: {
-          //       minWidth: 500,
-          //       className: 'east-parking-lot-transect'
-          //     }
-          //   },
-          //   hoverStyle: {
-          //     weight: 7,
-          //     color: '#e1e3dc'
-          //   }
-          // },
-          // {
-          //   label: 'Series 1 - Transect',
-          //   file: 'transectlines0.json',
-          //   active: false,
-          //   class: 'transects',
-          //   style: feature => {
-          //     if (feature.properties.layer.style && feature.properties.layer.label !== 'Series 1 - Transect') {
-          //       return feature.properties.layer.style(feature)
-          //     }
-          //     let color = feature.properties.Name === 'BB' ? '#f56725' : '#e0f525'
-          //     return {
-          //       color: color,
-          //       weight: 5
-          //     }
-          //   },
-          //   options: {
-          //     hoverStyle: {
-          //       weight: 7,
-          //       color: '#e1e1e1'
-          //     }
-          //   },
-          //   template: {
-          //     label: 'Transect Series 1',
-          //     legend: true,
-          //     tooltip: feature => {
-          //       return `<p>Transect ${feature.feature.properties.Name}</p>`
-          //     },
-          //     popup: feature => {
-          //       const props = feature.feature.properties
-          //       return `
-          //         <h6>Transect ${props.Name}</h6>
-          //         <p>Click <a href="${props.hyperlink}" target="_blank"><b>here</b></a> to open Cross-Section Interactive Page.</p>
-          //       `
-          //     },
-          //     colorRampType: 'category',
-          //     limits: ['BB', 'GG'],
-          //     labels: ['Transect BB', 'Transect GG'],
-          //     colors: ['#f56725', '#e0f525']
-          //   }
-          // },
           {
             label: "Series 2 - Transect",
             file: "TranLineSeries214.json",
@@ -677,134 +811,6 @@ export const useMapStore = defineStore("map-store", {
               ],
             },
           },
-          // {
-          //   label: 'Series 3 - Transect',
-          //   file: 'TranLineSeries313.json',
-          //   active: false,
-          //   class: 'transects',
-          //   style: feature => {
-          //     if (feature.properties.layer.style && feature.properties.layer.label !== 'Series 3 - Transect') {
-          //       return feature.properties.layer.style(feature)
-          //     }
-          //     const props = feature.properties
-          //     let color = (props.Name === 'A-A\'' ? '#f56725' :
-          //                  props.Name === 'B-B\'' ? '#e0f525' :
-          //                  props.Name === 'C-C\'' ? '#1cad21' :
-          //                  props.Name === 'D-D\'' ? '#1c58ad' : '#FF0000')
-          //     return {
-          //       color: color,
-          //       weight: 5
-          //     }
-          //   },
-          //   options: {
-          //     hoverStyle: {
-          //       weight: 7,
-          //       color: '#e1e1e1'
-          //     }
-          //   },
-          //   template: {
-          //     label: 'Transect Series 3',
-          //     legend: true,
-          //     tooltip: feature => {
-          //       return `<p>Transect ${feature.feature.properties.Name}</p>`
-          //     },
-          //     popup: feature => {
-          //       const props = feature.feature.properties
-          //       return `
-          //         <h6>Transect ${props.Name}</h6>
-          //         <p>Click <a href="${props.url}" target="_blank"><b>here</b></a> to open Cross-Section Interactive Page.</p>
-          //       `
-          //     },
-          //     colorRampType: 'category',
-          //     limits: ['A-A\'', 'B-B\'', 'C-C\'', 'D-D\''],
-          //     labels: ['Transect A-A\'', 'Transect B-B\'', 'Transect C-C\'', 'Transect D-D\''],
-          //     colors: ['#f56725', '#e0f525', '#1cad21', '#1c58ad']
-          //   }
-          // }
-        ],
-      },
-      {
-        label: "Well Characteristics, Soil Type, Base Topo",
-        icon: "commit",
-        childs: [
-          {
-            label: "Active Wells",
-            file: "ActiveWells.json",
-            active: false,
-            class: "wells",
-          },
-          {
-            label: "Abandoned Wells",
-            file: "AbanWells.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#ebf4ff",
-            },
-          },
-          {
-            label: "TA Wells",
-            file: "WCTAWells12.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#caffa3",
-            },
-          },
-          {
-            label: "Upper Sands of the Upper Paluxy Wells",
-            file: "WCUSUPWells11.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#c44fef",
-            },
-          },
-          {
-            label: "UP Wells",
-            file: "WCUPWells10.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#13748e",
-            },
-          },
-          {
-            label: "MP Wells",
-            file: "WCMPWells9.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#a04311",
-            },
-          },
-          {
-            label: "LP Wells",
-            file: "WCLPWells8.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#138e44",
-            },
-          },
-          {
-            label: "Texas Public Water Wells",
-            file: "TXPWW.json",
-            active: false,
-            class: "wells",
-            template: {
-              fillColor: "#caffa3",
-              tooltip: (feature) => {
-                const props = feature.feature.properties;
-                return `
-                  Well ID: ${props.ST_WELL_NO}<br>
-                  System Name: ${props.SYS_NAME}<br>
-                  Aquifer: ${props.AQUIFER}<br>
-                  Well Depth: ${props.WELL_DEPTH}
-                `;
-              },
-            },
-          },
         ],
       },
       {
@@ -826,79 +832,6 @@ export const useMapStore = defineStore("map-store", {
               return {
                 weight: 5,
                 color: "#006aff",
-                opacity: 0.9,
-              };
-            },
-          },
-          {
-            label: "Farmers Branch Creek & Vicinity",
-            file: "uuflowline.json",
-            active: false,
-            class: "bi",
-            options: {
-              tooltip: (feature) => {
-                const props = feature.feature.properties;
-                return props.Name;
-              },
-            },
-            template: {
-              label: "Farmers Branch Creek & Vicinity",
-              legend: true,
-              colorRampType: "category",
-              limits: [
-                "Farmers Branch Creek",
-                "Unnamed Tributary",
-                "Kings Branch Creek",
-                "Underground Aqueduct",
-              ],
-              colors: ["#f56725", "#e0f525", "#1cad21", "#1c58ad"],
-            },
-            style: (feature) => {
-              if (
-                feature.properties.layer.style &&
-                feature.properties.layer.label !==
-                  "Farmers Branch Creek & Vicinity"
-              ) {
-                return feature.properties.layer.style(feature);
-              }
-              const props = feature.properties;
-              let color;
-              if (props.Name === "Farmers Branch Creek") color = "#f56725";
-              else if (props.Name === "Unnamed Tributary") color = "#e0f525";
-              else if (props.Name === "Kings Branch Creek") color = "#1cad21";
-              else if (props.Name === "Underground Aqueduct") color = "#1c58ad";
-              else color = "#FF0000";
-              let style = {
-                weight: 5,
-                color: color,
-                opacity: 0.9,
-              };
-              if (props.Name === "Underground Aqueduct")
-                style.dashArray = "1, 8";
-              return style;
-            },
-          },
-          {
-            label: "Navy SWMUs",
-            file: "BINavySWMUs6.json",
-            active: false,
-            class: "bi",
-            options: {
-              tooltip: (feature) => {
-                const props = feature.feature.properties;
-                return props.DESC_;
-              },
-            },
-            style: (feature) => {
-              if (
-                feature.properties.layer.style &&
-                feature.properties.layer.label !== "Navy SWMUs"
-              ) {
-                return feature.properties.layer.style(feature);
-              }
-              return {
-                weight: 3,
-                color: "#f70505",
                 opacity: 0.9,
               };
             },
@@ -968,25 +901,6 @@ export const useMapStore = defineStore("map-store", {
               return {
                 weight: 3,
                 color: "#3bceff",
-                opacity: 0.9,
-              };
-            },
-          },
-          {
-            label: "NASFW boundary",
-            file: "BINASFWboundary2.json",
-            active: false,
-            class: "bi",
-            style: (feature) => {
-              if (
-                feature.properties.layer.style &&
-                feature.properties.layer.label !== "NASFW boundary"
-              ) {
-                return feature.properties.layer.style(feature);
-              }
-              return {
-                weight: 3,
-                color: "#ff3beb",
                 opacity: 0.9,
               };
             },
@@ -1063,83 +977,114 @@ export const useMapStore = defineStore("map-store", {
           },
         ],
       },
-      // ,
-      // {
-      //   label: 'Registered Images',
-      //   icon: 'satellite_alt',
-      //   childs: [
-      //     {
-      //       label: 'Terrace Alluvium TCE Plume Map, March 2017',
-      //       file: 'TATCE2017March.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78487, -97.46211], [32.75486, -97.41547]]
-      //     },
-      //     {
-      //       label: 'Terrace Alluvium cis-1,2-DCE and VC Plume Map, March 2017',
-      //       file: 'cDCE12_VC2017March.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78489, -97.46208], [32.75476, -97.41542]]
-      //     },
-      //     {
-      //       label: 'GW Elevation Contours for Terrace Alluvium and Fill, April 6 - 10, 2015',
-      //       file: 'GWContour_TerraceAlluvium_Fill_April2015.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78546, -97.45857], [32.75847, -97.41162]]
-      //     },
-      //     {
-      //       label: 'Indoor Air Samping Results',
-      //       file: 'VILRFigure2.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78411, -97.46226], [32.75642, -97.41288]]
-      //     },
-      //     {
-      //       label: 'Sub slab and Indoor Air Samping Results',
-      //       file: 'VILRFigure3.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78411, -97.46226], [32.75642, -97.41288]]
-      //     },
-      //     {
-      //       label: 'USGS Isotope TCE Plume',
-      //       file: 'TCEPlume.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.77831, -97.45619], [32.76159, -97.4344]]
-      //     },
-      //     {
-      //       label: 'GW Elev Contours for Terrace Alluvium and Fill, March 31 - April 3, 2014',
-      //       file: 'AFP4Fig_4.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.78564, -97.45994], [32.75612, -97.41157]]
-      //     },
-      //     {
-      //       label: 'Thickness of the Alluvial Aquifer',
-      //       file: 'Figure8.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.79406,-97.46782], [32.74526,-97.39485]]
-      //     },
-      //     {
-      //       label: 'Thickness of the Goodland Walnut confining Unit',
-      //       file: 'Figure11.jpg',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.7953,-97.46948], [32.74572,-97.39498]]
-      //     },
-      //     {
-      //       label: 'Terrace Alluvium Plume Map, Spring 2020',
-      //       file: 'Plumes2020.png',
-      //       active: false,
-      //       class: 'geoimage',
-      //       bounds: [[32.783074,-97.457694], [32.757652,-97.420624]]
-      //     }
-      //   ]
-      // }
+      {
+        label: "Registered Images",
+        icon: "satellite_alt",
+        childs: [
+          {
+            label: "Terrace Alluvium TCE Plume Map, March 2017",
+            file: "TATCE2017March.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78487, -97.46211],
+              [32.75486, -97.41547],
+            ],
+          },
+          {
+            label: "Terrace Alluvium cis-1,2-DCE and VC Plume Map, March 2017",
+            file: "cDCE12_VC2017March.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78489, -97.46208],
+              [32.75476, -97.41542],
+            ],
+          },
+          {
+            label:
+              "GW Elevation Contours for Terrace Alluvium and Fill, April 6 - 10, 2015",
+            file: "GWContour_TerraceAlluvium_Fill_April2015.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78546, -97.45857],
+              [32.75847, -97.41162],
+            ],
+          },
+          {
+            label: "Indoor Air Samping Results",
+            file: "VILRFigure2.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78411, -97.46226],
+              [32.75642, -97.41288],
+            ],
+          },
+          {
+            label: "Sub slab and Indoor Air Samping Results",
+            file: "VILRFigure3.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78411, -97.46226],
+              [32.75642, -97.41288],
+            ],
+          },
+          {
+            label: "USGS Isotope TCE Plume",
+            file: "TCEPlume.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.77831, -97.45619],
+              [32.76159, -97.4344],
+            ],
+          },
+          {
+            label:
+              "GW Elev Contours for Terrace Alluvium and Fill, March 31 - April 3, 2014",
+            file: "AFP4Fig_4.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.78564, -97.45994],
+              [32.75612, -97.41157],
+            ],
+          },
+          {
+            label: "Thickness of the Alluvial Aquifer",
+            file: "Figure8.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.79406, -97.46782],
+              [32.74526, -97.39485],
+            ],
+          },
+          {
+            label: "Thickness of the Goodland Walnut confining Unit",
+            file: "Figure11.jpg",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.7953, -97.46948],
+              [32.74572, -97.39498],
+            ],
+          },
+          {
+            label: "Terrace Alluvium Plume Map, Spring 2020",
+            file: "Plumes2020.png",
+            active: false,
+            class: "geoimage",
+            bounds: [
+              [32.783074, -97.457694],
+              [32.757652, -97.420624],
+            ],
+          },
+        ],
+      },
     ],
   }),
   getters: {
