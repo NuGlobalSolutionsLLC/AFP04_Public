@@ -149,7 +149,7 @@ export default defineComponent({
         {},
         $store.sections[feature.properties.layer.class]
       );
-      template = feature.properties.layer.template;
+      template = Object.assign({}, feature.properties.layer.template);
       if (template) {
         defaultParams = Object.assign(defaultParams, template);
       }
@@ -185,24 +185,23 @@ export default defineComponent({
         });
     });
 
+    const pointToLayer = (feature, latLng) => {
+      const featureParams = getFeatureStyle(feature);
+      featureParams.riseOnHover = true;
+      if (feature.properties.Result === 0) {
+        return L.marker(latLng, {
+          icon: L.divIcon({ className: "arrow-up" }),
+        });
+      } else {
+        return circle(latLng, featureParams);
+      }
+    };
+
     const geoJsons = computed(() => {
       const layers = getActiveLayers();
       const commonParams = {
         options: {
-          pointToLayer: (feature, latLng) => {
-            const featureParams = getFeatureStyle(feature);
-            featureParams.riseOnHover = true;
-            if (feature.properties.Result === 0) {
-              return L.marker(latLng, {
-                icon: L.divIcon({ className: "arrow-up" }),
-              });
-            } else {
-              return circle(latLng, featureParams);
-            }
-            // const params = getFeatureStyle(feature);
-            // params.riseOnHover = true;
-            // return circle(latLng, params);
-          },
+          pointToLayer: pointToLayer,
           onEachFeature: function (feature, leafletLayer) {
             const layer = feature.properties.layer;
             let popup, tooltip;
@@ -261,16 +260,11 @@ export default defineComponent({
                 else latlng = event.target.getCenter();
                 popup = L.popup(options)
                   .setLatLng(latlng)
-                  // .setContent('<button id="close">x</button>' + event.target.options.popup({feature}))
                   .setContent(popupFunc({ feature }))
                   .openOn(map);
                 const px = map.project(latlng);
                 px.y -= popup._container.clientHeight / 2;
                 map.panTo(map.unproject(px), { animate: true });
-
-                // popup._container.querySelector('#close').addEventListener('pointerup', event => {
-                //   popup.close()
-                // })
               } else if (
                 event.target.feature.properties.layer.template &&
                 event.target.feature.properties.layer.template.analyte
