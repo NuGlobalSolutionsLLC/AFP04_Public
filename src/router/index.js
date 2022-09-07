@@ -37,9 +37,7 @@ export default route(function (/* { store, ssrContext } */) {
   const isValid = (auth) => {
     const expires = new Date(auth.expires);
     const now = new Date();
-    console.log(expires, now);
-    if (expires.getTime() > now.getTime()) return true;
-    return false;
+    return expires.getTime() > now.getTime() ? true : false;
   };
 
   router.beforeEach(async (to) => {

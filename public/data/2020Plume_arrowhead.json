@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "2020Plume_arrowhead",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "arrowlabel": "1" }, "geometry": { "type": "Point", "coordinates": [ -97.451704605050949, 32.779260270289114 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "1" }, "geometry": { "type": "Point", "coordinates": [ -97.45328832985625, 32.777275104529821 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "2" }, "geometry": { "type": "Point", "coordinates": [ -97.448371910621532, 32.778005269450752 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "2" }, "geometry": { "type": "Point", "coordinates": [ -97.44237350945528, 32.775057900594568 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "2" }, "geometry": { "type": "Point", "coordinates": [ -97.427958752428893, 32.775189276416143 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "2" }, "geometry": { "type": "Point", "coordinates": [ -97.424257049513358, 32.767494006315623 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "3" }, "geometry": { "type": "Point", "coordinates": [ -97.422129776722812, 32.777916629445642 ] } },
+{ "type": "Feature", "properties": { "arrowlabel": "4" }, "geometry": { "type": "Point", "coordinates": [ -97.433686388846382, 32.7657168579412 ] } }
+]
+}
