@@ -396,11 +396,11 @@ export const useMapStore = defineStore("map-store", {
     },
     layers: [
       {
-        label: "2021 Plume",
+        label: "Plumes",
         icon: "shape_line",
         childs: [
           {
-            label: "Flow direction",
+            label: "Flow direction 2020",
             file: "2020Plume_arrowlines.json",
             class: "a",
             active: false,
@@ -492,7 +492,7 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "Contour",
+            label: "Contour 2021",
             file: "POT_TA.json",
             class: "a",
             active: false,
@@ -541,7 +541,7 @@ export const useMapStore = defineStore("map-store", {
             template: TEMPLATES.pot,
           },
           {
-            label: "TAC-VC",
+            label: "TAC-VC 2022",
             file: "Terrace_VC_2022.json",
             class: "a",
             active: false,
@@ -582,7 +582,7 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "TAC-DCE",
+            label: "TAC-DCE 2022",
             file: "Terrace_cDCE_2022.json",
             class: "a",
             active: false,
@@ -631,7 +631,7 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "TAC-TCE",
+            label: "TAC-TCE 2022",
             file: "Terrace_TCE_2022.json",
             class: "a",
             active: false,
