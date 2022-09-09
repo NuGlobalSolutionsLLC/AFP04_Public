@@ -542,7 +542,7 @@ export const useMapStore = defineStore("map-store", {
           },
           {
             label: "TAC-VC",
-            file: "s4_Terrace_VC_2021.json",
+            file: "Terrace_VC_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
@@ -583,7 +583,7 @@ export const useMapStore = defineStore("map-store", {
           },
           {
             label: "TAC-DCE",
-            file: "s4_Terrace_cDCE_2021.json",
+            file: "Terrace_cDCE_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
@@ -632,7 +632,7 @@ export const useMapStore = defineStore("map-store", {
           },
           {
             label: "TAC-TCE",
-            file: "s4_Terrace_TCE_2021.json",
+            file: "Terrace_TCE_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
