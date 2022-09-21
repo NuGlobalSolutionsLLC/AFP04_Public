@@ -39,7 +39,7 @@ const TEMPLATES = {
   pot: {
     style: (feature) => {
       let props = feature.properties;
-      if (props.layer.style && props.layer.label !== "Contour") {
+      if (props.layer.style && props.layer.label !== "Contour 2021") {
         return props.layer.style(feature);
       }
       if (props.Color == 100) return makePotStyle();
@@ -69,7 +69,7 @@ const TEMPLATES = {
     },
     style_ta: (feature) => {
       let props = feature.properties;
-      if (props.layer.style && props.layer.label !== "Contour") {
+      if (props.layer.style && props.layer.label !== "Contour 2021") {
         return props.layer.style(feature);
       }
       if (props.Color == 140) return makePotStyle();
@@ -407,7 +407,7 @@ export const useMapStore = defineStore("map-store", {
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "Flow direction"
+                feature.properties.layer.label !== "Flow direction 2020"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -443,7 +443,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "Flow direction"
+                  feature.properties.layer.label !== "Flow direction 2020"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -499,7 +499,7 @@ export const useMapStore = defineStore("map-store", {
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "Contour"
+                feature.properties.layer.label !== "Contour 2021"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -513,7 +513,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "Contour"
+                  feature.properties.layer.label !== "Contour 2021"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -522,7 +522,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "Contour"
+                  feature.properties.layer.label !== "Contour 2021"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -548,7 +548,7 @@ export const useMapStore = defineStore("map-store", {
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-VC"
+                feature.properties.layer.label !== "TAC-VC 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -558,7 +558,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-VC"
+                  feature.properties.layer.label !== "TAC-VC 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -567,7 +567,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-VC"
+                  feature.properties.layer.label !== "TAC-VC 2022"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -589,7 +589,7 @@ export const useMapStore = defineStore("map-store", {
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-DCE"
+                feature.properties.layer.label !== "TAC-DCE 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -603,7 +603,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-DCE"
+                  feature.properties.layer.label !== "TAC-DCE 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -616,7 +616,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-DCE"
+                  feature.properties.layer.label !== "TAC-DCE 2022"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -638,7 +638,7 @@ export const useMapStore = defineStore("map-store", {
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-TCE"
+                feature.properties.layer.label !== "TAC-TCE 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -652,7 +652,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-TCE"
+                  feature.properties.layer.label !== "TAC-TCE 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -665,7 +665,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-TCE"
+                  feature.properties.layer.label !== "TAC-TCE 2022"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
