@@ -67,7 +67,7 @@ module.exports = configure(function (/* ctx */) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      // publicPath: '/',
+      publicPath: '/AFP04/',
       // analyze: true,
       // env: {
       //   VUE_ROUTER_MODE: "history"
