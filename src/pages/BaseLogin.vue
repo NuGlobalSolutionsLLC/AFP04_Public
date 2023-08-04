@@ -67,24 +67,7 @@ export default defineComponent({
     const doLogin = async () => {
       errors.value = "";
       loginDisabled.value = true;
-      // Log in usig the PHP backend
-      // const url = 'https://app.nuglobalsolutions.com/AFP4/index.php'
-      // const formData = new FormData();
-      // formData.append('user', username);
-      // formData.append('pass', password);
-      // formData.append('submit', true);
-      // fetch(url, {
-      //   method: 'POST',
-      //   body: formData
-      // }).then(response => {
-      //   if (response.ok) return response.text()
-      // }).then(text => {
-      //   const error = text.split('<span>')[1].split('</span>')[0]
-      //   if (error && error.includes('is Invalid')) {
-      //     console.error(username.value, password.value, 'is invalid')
-      //   }
-      // })
-      const url = `https://database.deta.sh/v1/${$store.DETA_ID}/afp4public_users/items/${username.value}`;
+      const url = `https://database.deta.sh/v1/${$store.DETA_ID}/${$store.DETA_NAME}/items/${username.value}`;
       const errorMessage = "Username or password do not match.";
       fetch(url, {
         method: "GET",

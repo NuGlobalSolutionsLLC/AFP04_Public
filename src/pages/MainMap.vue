@@ -29,15 +29,7 @@
       />
       <l-geo-json :geojson="selected.feature" v-if="selected" />
 
-      <div v-if="overlays.length !== 0">
-        <l-image-overlay
-          v-for="(overlay, index) in overlays"
-          :key="index"
-          :url="`img/${overlay.url}`"
-          :bounds="overlay.bounds"
-          :opacity="0.8"
-        />
-      </div>
+      <map-overlays :overlays="overlays"></map-overlays>
 
       <map-legend :layers="legendLayers" />
     </l-map>
@@ -57,6 +49,7 @@ import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import LineChart from "src/components/LineChart.vue";
 import MapLegend from "src/components/MapLegend.vue";
+import MapOverlays from "src/components/MapOverlays.vue";
 import {
   defineComponent,
   onBeforeMount,
@@ -68,7 +61,6 @@ import {
 import {
   LMap,
   LGeoJson,
-  LImageOverlay,
   LTileLayer,
   LControlAttribution,
 } from "@vue-leaflet/vue-leaflet";
@@ -78,12 +70,12 @@ export default defineComponent({
   name: "MainMap",
   components: {
     MapLegend,
+    MapOverlays,
     LineChart,
     LControlAttribution,
     LMap,
     LGeoJson,
     LTileLayer,
-    LImageOverlay,
   },
   setup() {
     const $store = useMapStore();
@@ -186,13 +178,13 @@ export default defineComponent({
     });
 
     const pointToLayer = (feature, latLng) => {
-      const featureParams = getFeatureStyle(feature);
-      featureParams.riseOnHover = true;
       if (feature.properties.Result === 0) {
         return L.marker(latLng, {
           icon: L.divIcon({ className: "arrow-up" }),
         });
       } else {
+        const featureParams = getFeatureStyle(feature);
+        featureParams.riseOnHover = true;
         return circle(latLng, featureParams);
       }
     };
