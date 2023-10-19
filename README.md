@@ -88,10 +88,8 @@ quasar build
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
 
-
-
-
 ### Log into website on browser:
-https://app.nuglobalsolutions.com/AFP04/   
-Login: guest   
-Pass: Lkx1nk0 
+
+https://app.nuglobalsolutions.com/AFP04/  
+Login: guest  
+Pass: Lkx1nk0
