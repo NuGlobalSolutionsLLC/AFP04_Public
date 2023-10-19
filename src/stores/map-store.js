@@ -541,14 +541,14 @@ export const useMapStore = defineStore("map-store", {
             template: TEMPLATES.pot,
           },
           {
-            label: "TAC-VC 2022",
+            label: "Terrace VC 2022",
             file: "Terrace_VC_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-VC 2022"
+                feature.properties.layer.label !== "Terrace VC 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -558,7 +558,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-VC 2022"
+                  feature.properties.layer.label !== "Terrace VC 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -567,7 +567,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-VC 2022"
+                  feature.properties.layer.label !== "Terrace VC 2022"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -582,14 +582,55 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "TAC-DCE 2022",
+            label: "Terrace VC 2023",
+            file: "Terrace_VC_2023.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "Terrace VC 2023"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              return TEMPLATES.tac.style(feature);
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "Terrace VC 2023"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                return TEMPLATES.tac.style(feature);
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "Terrace VC 2023"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+          {
+            label: "Terrace cDCE 2022",
             file: "Terrace_cDCE_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-DCE 2022"
+                feature.properties.layer.label !== "Terrace cDCE 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -603,7 +644,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-DCE 2022"
+                  feature.properties.layer.label !== "Terrace cDCE 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -616,7 +657,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-DCE 2022"
+                  feature.properties.layer.label !== "Terrace cDCE 2022"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -631,14 +672,63 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "TAC-TCE 2022",
+            label: "Terrace cDCE 2023",
+            file: "Terrace_cDCE_2023.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "Terrace cDCE 2023"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              const _style = Object.create(TEMPLATES.tac.style(feature));
+              return Object.assign(_style, {
+                color: "rgba(95,93,90,0.2)",
+                fillColor: "rgba(168,0,132,0.6)",
+              });
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "Terrace cDCE 2023"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                const _style = Object.create(TEMPLATES.tac.style(feature));
+                return Object.assign(_style, {
+                  color: "rgba(95,93,90,0.2)",
+                  fillColor: "rgba(168,0,132,0.6)",
+                });
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "Terrace cDCE 2023"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+          {
+            label: "Terrace TCE 2022",
             file: "Terrace_TCE_2022.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "TAC-TCE 2022"
+                feature.properties.layer.label !== "Terrace TCE 2022"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -652,7 +742,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "TAC-TCE 2022"
+                  feature.properties.layer.label !== "Terrace TCE 2022"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -665,7 +755,56 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "TAC-TCE 2022"
+                  feature.properties.layer.label !== "Terrace TCE 2022"
+                ) {
+                  return feature.properties.layer.options.pointToLayer(
+                    feature,
+                    latLng
+                  );
+                }
+              },
+            },
+            hoverStyle: {
+              weight: 7,
+              color: "#e1e1e1",
+            },
+          },
+          {
+            label: "Terrace TCE 2023",
+            file: "Terrace_TCE_2023.json",
+            class: "a",
+            active: false,
+            style: (feature) => {
+              if (
+                feature.properties.layer.style &&
+                feature.properties.layer.label !== "Terrace TCE 2023"
+              ) {
+                return feature.properties.layer.style(feature);
+              }
+              const _style = Object.create(TEMPLATES.tac.style(feature));
+              return Object.assign(_style, {
+                color: "rgba(95,93,90,0.2)",
+                fillColor: "rgba(112,168,0,0.6)",
+              });
+            },
+            options: {
+              style: (feature) => {
+                if (
+                  feature.properties.layer.style &&
+                  feature.properties.layer.label !== "Terrace TCE 2023"
+                ) {
+                  return feature.properties.layer.style(feature);
+                }
+                const _style = Object.create(TEMPLATES.tac.style(feature));
+                return Object.assign(_style, {
+                  color: "rgba(95,93,90,0.2)",
+                  fillColor: "rgba(112,168,0,0.6)",
+                });
+              },
+              pointToLayer: (feature, latLng) => {
+                if (
+                  feature.properties.layer.options.pointToLayer &&
+                  feature.properties.layer.label !== "Terrace TCE 2023"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
