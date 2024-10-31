@@ -67,14 +67,17 @@ export default defineComponent({
     const doLogin = async () => {
       errors.value = "";
       loginDisabled.value = true;
-      const url = `https://database.deta.sh/v1/${$store.DETA_ID}/${$store.DETA_NAME}/items/${username.value}`;
+      const url = `https://culkcka9db.execute-api.us-east-2.amazonaws.com/Prod/auth`;
       const errorMessage = "Username or password do not match.";
       fetch(url, {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value,
+        }),
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-API-Key": $store.DETA_KEY,
         },
       })
         .then((response) => {
@@ -85,16 +88,12 @@ export default defineComponent({
           }
         })
         .then((json) => {
-          if (json) {
-            sha256(password.value).then((hash) => {
-              if (json.password === hash) {
-                $store.saveLoginState(username.value);
-                router.push("/");
-              } else {
-                errors.value = errorMessage;
-                loginDisabled.value = false;
-              }
-            });
+          if (json.success) {
+            $store.saveLoginState(username.value);
+            router.push("/");
+          } else {
+            errors.value = errorMessage;
+            loginDisabled.value = false;
           }
         });
     };
