@@ -67,7 +67,7 @@ export default defineComponent({
     const doLogin = async () => {
       errors.value = "";
       loginDisabled.value = true;
-      const url = `https://culkcka9db.execute-api.us-east-2.amazonaws.com/Prod/auth`;
+      const url = `https://culkcka9db.execute-api.us-east-2.amazonaws.com/Prod/auth?namespace=${$store.AUTH_NAMESPACE}`;
       const errorMessage = "Username or password do not match.";
       fetch(url, {
         method: "POST",
