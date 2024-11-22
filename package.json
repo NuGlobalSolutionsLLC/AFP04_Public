@@ -1,6 +1,7 @@
 {
   "name": "afp4v2",
   "version": "0.0.1",
+  "type": "module",
   "description": "A Quasar Project",
   "productName": "WebGIS | AFP4",
   "author": "Marc Compte <marc@braquets.cat>",
@@ -13,6 +14,9 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0"
   },
+  "overrides": {
+    "http-proxy-middleware": "^2.0.7"
+  },
   "dependencies": {
     "@quasar/cli": "^2.4.1",
     "@quasar/extras": "^1.0.0",
@@ -24,7 +28,7 @@
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.4.3",
+    "@quasar/app-vite": "^2.0.0-rc.3",
     "@vue-leaflet/vue-leaflet": "^0.6.1",
     "autoprefixer": "10.4.5",
     "eslint": "^8.10.0",
