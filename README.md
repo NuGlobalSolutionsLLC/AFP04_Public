@@ -127,9 +127,17 @@ scp -r ./dist/spa/* <your-username>@<ec2-ip>:/var/www/html/apps/AFP04
 
 Replace `<your-username>` and `<ec2-ip>` with the appropriate values for your EC2 instance.
 
-### 3. Verify Deployment
+### 3. Update ownership
 
-After the files are copied, verify that the application is accessible by visiting:
+After the files are copied, update the ownership and access permission:
+
+```
+chmown -R www-data:www-data ./AFP04; chmod -R 777 ./AFP04
+```
+
+### 4. Verify Deployment
+
+After the files are updated, verify that the application is accessible by visiting:
 
 ```
 http://<ec2-ip>/apps/AFP04
