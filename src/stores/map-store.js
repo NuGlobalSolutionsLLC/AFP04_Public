@@ -539,14 +539,14 @@ export const useMapStore = defineStore("map-store", {
             template: TEMPLATES.pot,
           },
           {
-            label: "Terrace VC 2022",
-            file: "Terrace_VC_2022.json",
+            label: "Terrace VC 2025",
+            file: "Terrace_VC_2025.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "Terrace VC 2022"
+                feature.properties.layer.label !== "Terrace VC 2025"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -556,7 +556,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "Terrace VC 2022"
+                  feature.properties.layer.label !== "Terrace VC 2025"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -565,7 +565,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "Terrace VC 2022"
+                  feature.properties.layer.label !== "Terrace VC 2025"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -621,14 +621,14 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "Terrace cDCE 2022",
-            file: "Terrace_cDCE_2022.json",
+            label: "Terrace cDCE 2025",
+            file: "Terrace_cDCE_2025.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "Terrace cDCE 2022"
+                feature.properties.layer.label !== "Terrace cDCE 2025"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -642,7 +642,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "Terrace cDCE 2022"
+                  feature.properties.layer.label !== "Terrace cDCE 2025"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -655,7 +655,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "Terrace cDCE 2022"
+                  feature.properties.layer.label !== "Terrace cDCE 2025"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
@@ -719,14 +719,14 @@ export const useMapStore = defineStore("map-store", {
             },
           },
           {
-            label: "Terrace TCE 2022",
-            file: "Terrace_TCE_2022.json",
+            label: "Terrace TCE 2025",
+            file: "Terrace_TCE_2025.json",
             class: "a",
             active: false,
             style: (feature) => {
               if (
                 feature.properties.layer.style &&
-                feature.properties.layer.label !== "Terrace TCE 2022"
+                feature.properties.layer.label !== "Terrace TCE 2025"
               ) {
                 return feature.properties.layer.style(feature);
               }
@@ -740,7 +740,7 @@ export const useMapStore = defineStore("map-store", {
               style: (feature) => {
                 if (
                   feature.properties.layer.style &&
-                  feature.properties.layer.label !== "Terrace TCE 2022"
+                  feature.properties.layer.label !== "Terrace TCE 2025"
                 ) {
                   return feature.properties.layer.style(feature);
                 }
@@ -753,7 +753,7 @@ export const useMapStore = defineStore("map-store", {
               pointToLayer: (feature, latLng) => {
                 if (
                   feature.properties.layer.options.pointToLayer &&
-                  feature.properties.layer.label !== "Terrace TCE 2022"
+                  feature.properties.layer.label !== "Terrace TCE 2025"
                 ) {
                   return feature.properties.layer.options.pointToLayer(
                     feature,
