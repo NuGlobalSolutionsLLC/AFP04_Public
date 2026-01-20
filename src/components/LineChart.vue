@@ -97,7 +97,8 @@ export default defineComponent({
       const wellID = $store.selectedFeature.feature.properties.Well_ID;
       const analyte = layer.template.analyte;
       const matrix = layer.matrix;
-      const data = tcedata.filter((item) => {
+      const series = Array.isArray(globalThis.tcedata) ? globalThis.tcedata : [];
+      const data = series.filter((item) => {
         return (
           item.Well_ID === wellID &&
           item.Analyte === analyte &&
