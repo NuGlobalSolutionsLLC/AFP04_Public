@@ -12,7 +12,7 @@
     "build": "quasar build",
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "node --test tests/*.test.mjs"
   },
   "overrides": {
     "http-proxy-middleware": "^2.0.7"

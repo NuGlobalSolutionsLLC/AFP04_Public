@@ -179,15 +179,9 @@ export default defineComponent({
     });
 
     const pointToLayer = (feature, latLng) => {
-      if (feature.properties.Result === 0) {
-        return L.marker(latLng, {
-          icon: L.divIcon({ className: "arrow-up" }),
-        });
-      } else {
-        const featureParams = getFeatureStyle(feature);
-        featureParams.riseOnHover = true;
-        return circle(latLng, featureParams);
-      }
+      const featureParams = getFeatureStyle(feature);
+      featureParams.riseOnHover = true;
+      return circle(latLng, featureParams);
     };
 
     const geoJsons = computed(() => {
@@ -431,13 +425,6 @@ export default defineComponent({
 </script>
 
 <style type="scss" scoped>
-:deep(.arrow-up) {
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 14px solid #910000a1;
-}
 :deep(.label) {
   font-size: 1.6em;
   font-weight: bold;
